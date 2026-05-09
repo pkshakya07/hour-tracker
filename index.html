@@ -7,36 +7,38 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <title>WorkTrack PWA</title>
+    <title>WorkTrack Pro</title>
 </head>
 <body>
-    <div class="card">
-        <select id="workType">
-            <option>Home Office</option>
-            <option>Factory Sassnitz</option>
-            <option>Factory Bentwisch</option>
-            <option>Business Trip</option>
-        </select>
-        <div class="timer" id="timer">00:00:00</div>
-        <div class="controls">
-            <button id="startBtn" class="btn-start">Login</button>
-            <button id="stopBtn" class="btn-stop" disabled>Logout</button>
+    <div class="container">
+        <div class="card">
+            <select id="workType">
+                <option>Home Office</option>
+                <option>Factory Sassnitz</option>
+                <option>Factory Bentwisch</option>
+                <option>Business Trip</option>
+            </select>
+            <div class="timer" id="timer">00:00:00</div>
+            <div class="controls">
+                <button id="startBtn" class="btn-start">Login</button>
+                <button id="stopBtn" class="btn-stop" disabled>Logout</button>
+            </div>
         </div>
-    </div>
-    
-    <div class="card">
-        <div style="display:flex; justify-content:space-between;">
-            <button id="exportBtn" class="btn-outline" style="max-width:100px;">Export</button>
-            <div id="syncStatus" style="font-size:0.8rem; color:gray;">Checking Sync...</div>
+        
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <select id="yearSelector" style="width:auto; margin:0; padding:5px; height:35px; flex:none;">
+                    <option value="2025">2025</option>
+                    <option value="2026" selected>2026</option>
+                    <option value="2027">2027</option>
+                </select>
+                <button id="exportBtn" class="btn-outline" style="width:80px; flex:none;">Export</button>
+            </div>
+            <canvas id="workChart"></canvas>
         </div>
-        <canvas id="workChart" height="200"></canvas>
-    </div>
 
-    <div class="card">
-        <h3>History</h3>
         <div id="logList"></div>
     </div>
-
     <script src="app.js"></script>
 </body>
 </html>
