@@ -2,14 +2,15 @@
     --bg: #121212; --card: #1e1e1e; --primary: #bb86fc;
     --secondary: #03dac6; --error: #cf6679; --text: #e1e1e1;
 }
-body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 15px; }
-.card { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-.timer { font-size: 3rem; text-align: center; margin: 20px 0; color: var(--secondary); }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; padding: 15px; }
+.container { max-width: 500px; margin: auto; }
+.card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.timer { font-size: 3.5rem; text-align: center; margin: 20px 0; color: var(--secondary); font-weight: bold; }
 .controls { display: flex; gap: 10px; }
-button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-.btn-start { background: var(--secondary); }
+button { flex: 1; padding: 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.btn-start { background: var(--secondary); color: #000; }
 .btn-stop { background: var(--error); color: white; }
-.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-select { width: 100%; padding: 10px; background: #333; color: white; border-radius: 8px; margin-bottom: 10px; }
-.log-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; }
-.editable { color: var(--primary); text-decoration: underline; cursor: pointer; }
+.btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px; font-size: 0.8rem; }
+select { width: 100%; padding: 12px; background: #333; color: white; border-radius: 10px; border: 1px solid #444; margin-bottom: 15px; }
+.log-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333; align-items: center; }
+h4 { margin-top: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
