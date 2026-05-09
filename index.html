@@ -7,36 +7,36 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <title>WorkTrack Pro</title>
+    <title>WorkTrack PWA</title>
 </head>
 <body>
-    <div class="container">
-        <div class="card">
-            <select id="workType">
-                <option>Home Office</option>
-                <option>Factory Sassnitz</option>
-                <option>Factory Bentwisch</option>
-                <option>Business Trip</option>
-            </select>
-            <div class="timer" id="timer">00:00:00</div>
-            <div class="controls">
-                <button id="startBtn" class="btn-start">Login</button>
-                <button id="stopBtn" class="btn-stop" disabled>Logout</button>
-            </div>
-        </div>
-        
-        <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <span id="syncStatus" style="font-size:0.7rem; color:#888;">Cloud Sync Active</span>
-                <button id="exportBtn" class="btn-outline" style="flex:none; width:80px;">Export</button>
-            </div>
-            <canvas id="workChart"></canvas>
-        </div>
-
-        <div id="logList">
-            <!-- This area is dynamically filled by app.js -->
+    <div class="card">
+        <select id="workType">
+            <option>Home Office</option>
+            <option>Factory Sassnitz</option>
+            <option>Factory Bentwisch</option>
+            <option>Business Trip</option>
+        </select>
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="controls">
+            <button id="startBtn" class="btn-start">Login</button>
+            <button id="stopBtn" class="btn-stop" disabled>Logout</button>
         </div>
     </div>
+    
+    <div class="card">
+        <div style="display:flex; justify-content:space-between;">
+            <button id="exportBtn" class="btn-outline" style="max-width:100px;">Export</button>
+            <div id="syncStatus" style="font-size:0.8rem; color:gray;">Checking Sync...</div>
+        </div>
+        <canvas id="workChart" height="200"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>History</h3>
+        <div id="logList"></div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>

@@ -1,7 +1,6 @@
-const SCRIPT_URL = 'https://script.google.com/macros/library/d/1L86S6LInc_XXmlQME9apAZxwHKBi6N6c026mRAyS6LsyyTE99O-lKmHC/1'; 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPEmnntVou300r1CAJxnKxyktmccbKi-YjLryAlFbx-bdo2juh7n8bZE6OsMAulp8/exec';
 let startTime, timerInterval;
 
-// Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
 }
@@ -19,7 +18,6 @@ document.getElementById('stopBtn').onclick = async () => {
     const endTime = new Date();
     const start = new Date(localStorage.getItem('startTime'));
     const duration = ((endTime - start) / 3600000).toFixed(2);
-    
     const entry = {
         workType: document.getElementById('workType').value,
         start: start.toLocaleString(),
@@ -28,7 +26,6 @@ document.getElementById('stopBtn').onclick = async () => {
         month: start.toLocaleString('default', { month: 'long' }),
         year: start.getFullYear()
     };
-
     saveEntry(entry);
     resetUI();
 };
@@ -38,9 +35,9 @@ function updateTimer() {
     const start = new Date(localStorage.getItem('startTime'));
     const diff = new Date(now - start);
     document.getElementById('timer').innerText = 
-        diff.getUTCHours().toString().padStart(2, '0') + ":" + 
-        diff.getUTCMinutes().toString().padStart(2, '0') + ":" + 
-        diff.getUTCSeconds().toString().padStart(2, '0');
+        String(Math.floor((now - start) / 3600000)).padStart(2, '0') + ":" + 
+        String(Math.floor(((now - start) % 3600000) / 60000)).padStart(2, '0') + ":" + 
+        String(Math.floor(((now - start) % 60000) / 1000)).padStart(2, '0');
 }
 
 async function saveEntry(entry) {
@@ -48,19 +45,20 @@ async function saveEntry(entry) {
     logs.push(entry);
     localStorage.setItem('workLogs', JSON.stringify(logs));
     renderDashboard(logs);
-
     try {
         await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(entry) });
         fetchCloudData();
-    } catch (e) { console.log("Offline mode"); }
+    } catch (e) { console.log("Offline"); }
 }
 
 async function fetchCloudData() {
     try {
         const res = await fetch(SCRIPT_URL);
         const data = await res.json();
-        localStorage.setItem('workLogs', JSON.stringify(data));
-        renderDashboard(data);
+        if(data && data.length > 0) {
+            localStorage.setItem('workLogs', JSON.stringify(data));
+            renderDashboard(data);
+        }
     } catch (e) {
         renderDashboard(JSON.parse(localStorage.getItem('workLogs') || '[]'));
     }
@@ -69,11 +67,10 @@ async function fetchCloudData() {
 function renderDashboard(data) {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
-
     const monthTotal = data.filter(l => l.month === currentMonth && l.year == currentYear)
-                           .reduce((sum, l) => sum + parseFloat(l.duration), 0);
+                           .reduce((sum, l) => sum + parseFloat(l.duration || 0), 0);
     const yearTotal = data.filter(l => l.year == currentYear)
-                          .reduce((sum, l) => sum + parseFloat(l.duration), 0);
+                          .reduce((sum, l) => sum + parseFloat(l.duration || 0), 0);
 
     const logList = document.getElementById('logList');
     logList.innerHTML = `
@@ -90,11 +87,10 @@ function renderDashboard(data) {
         <h4>Recent History</h4>
     ` + data.slice().reverse().map(log => `
         <div class="log-item">
-            <span><strong>${log.workType}</strong><br><small style="color:#888">${log.start.split(',')[0]}</small></span>
+            <span><strong>${log.workType}</strong><br><small style="color:#888">${log.start}</small></span>
             <span style="color:#bb86fc; font-weight:bold;">${log.duration}h</span>
         </div>
     `).join('');
-
     updateChart(data);
 }
 
@@ -105,9 +101,8 @@ function updateChart(data) {
     const monthlyData = monthNames.map((m, i) => {
         const fullMonth = new Date(2000, i).toLocaleString('default', { month: 'long' });
         return data.filter(l => l.month === fullMonth && l.year == currentYear)
-                   .reduce((sum, l) => sum + parseFloat(l.duration), 0);
+                   .reduce((sum, l) => sum + parseFloat(l.duration || 0), 0);
     });
-
     if (window.myChart) window.myChart.destroy();
     window.myChart = new Chart(ctx, {
         type: 'line',
@@ -121,20 +116,9 @@ function updateChart(data) {
                 tension: 0.4
             }]
         },
-        options: { 
-            plugins: { legend: { display: false } },
-            scales: { y: { beginAtZero: true, grid: { color: '#333' } }, x: { grid: { display: false } } }
-        }
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
     });
 }
-
-document.getElementById('exportBtn').onclick = () => {
-    const logs = JSON.parse(localStorage.getItem('workLogs') || '[]');
-    const ws = XLSX.utils.json_to_sheet(logs);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Logs");
-    XLSX.writeFile(wb, "WorkHistory.xlsx");
-};
 
 function resetUI() {
     document.getElementById('startBtn').disabled = false;
@@ -142,5 +126,4 @@ function resetUI() {
     document.getElementById('timer').innerText = "00:00:00";
     localStorage.removeItem('startTime');
 }
-
 window.onload = fetchCloudData;
