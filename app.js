@@ -1,4 +1,4 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPEmnntVou300r1CAJxnKxyktmccbKi-YjLryAlFbx-bdo2juh7n8bZE6OsMAulp8/exec'; 
+const SCRIPT_URL = 'https://script.google.com/macros/library/d/1L86S6LInc_XXmlQME9apAZxwHKBi6N6c026mRAyS6LsyyTE99O-lKmHC/1'; 
 let startTime, timerInterval;
 
 // Register Service Worker for PWA
