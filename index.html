@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>WorkTrack PWA</title>
+</head>
+<body>
+    <div class="card">
+        <select id="workType">
+            <option>Home Office</option>
+            <option>Factory Sassnitz</option>
+            <option>Factory Bentwisch</option>
+            <option>Business Trip</option>
+        </select>
+        <div class="timer" id="timer">00:00:00</div>
+        <div class="controls">
+            <button id="startBtn" class="btn-start">Login</button>
+            <button id="stopBtn" class="btn-stop" disabled>Logout</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div style="display:flex; justify-content:space-between;">
+            <button id="exportBtn" class="btn-outline" style="max-width:100px;">Export</button>
+            <div id="syncStatus" style="font-size:0.8rem; color:gray;">Checking Sync...</div>
+        </div>
+        <canvas id="workChart" height="200"></canvas>
+    </div>
+
+    <div class="card">
+        <h3>History</h3>
+        <div id="logList"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
